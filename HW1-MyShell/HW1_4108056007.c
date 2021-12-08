@@ -307,11 +307,11 @@ int main(void){
 		
 		/////////////////////////if it is redirection, open target file/////////////////////////
 		if(redirect==true) { 
+			fflush(stdout);
 			outfd_back=dup(1); 
-
 			//create/append output file
-			if(par3[0]=='\0' && append==false) outfd=open(par2, O_CREAT|O_WRONLY, 0666); 
-			else if(par3[0]!='\0' && append==false) outfd=open(par3, O_CREAT|O_WRONLY, 0666);
+			if(par3[0]=='\0' && append==false) outfd=open(par2, O_CREAT|O_WRONLY|O_TRUNC, 0666); 
+			else if(par3[0]!='\0' && append==false) outfd=open(par3, O_CREAT|O_WRONLY|O_TRUNC, 0666);
 			else if (par3[0]=='\0' && append==true) outfd=open(par2, O_WRONLY|O_APPEND, 0666);
 			else if (par3[0]!='\0' && append==true) outfd=open(par3, O_WRONLY|O_APPEND, 0666);
 
