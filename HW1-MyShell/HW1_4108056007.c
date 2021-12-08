@@ -140,7 +140,7 @@ void ECHO_COMMAND(int flag, int outfd, int outfd_back){
 		if(redirect==true){
 			dup2(outfd, 1); //redirect output to file par3
 
-			for (i=5; i<MAX_BUFFER && buff[i]!=' '; i++){  //don't print the "echo" 
+			for (i=5; i<MAX_BUFFER && buff[i]!='\0' && buff[i]!='>'; i++){  //don't print the "echo" 
 				printf("%c",buff[i]);
 			}
 			printf("\n");
@@ -150,7 +150,7 @@ void ECHO_COMMAND(int flag, int outfd, int outfd_back){
 			close(outfd);
 		}
 		else{
-			for (i=5; i<MAX_BUFFER && buff[i]!=' '; i++){  //don't print the "echo" 
+			for (i=5; i<MAX_BUFFER && buff[i]!='\0'; i++){  //don't print the "echo" 
 				printf("%c",buff[i]);
 			}
 			printf("\n");
@@ -416,7 +416,10 @@ int main(void){
 			else if(ex_pid==0){ //child process
 				if(redirect==true){
 					dup2(outfd, 1); //redirect output to file par2
-					execlp(command, par2, NULL); 
+
+					if(par3[0]!='\0') execlp(command, par3, par1, NULL); //with 2 par: ls -l >> file
+					else execlp(command, par2, NULL); //with 1 par: ls > file
+	
 					fflush(stdout);
 					dup2(outfd_back, 1);
 					close(outfd);
